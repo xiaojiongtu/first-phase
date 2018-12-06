@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		ul li{
+
+			list-style: none;
+		}
+		ul{
+			position: absolute;
+			height: 300px;
+			top: 50%;
+			margin-top: -150px;
+			left: 0;
+		}
+		li{
+			height: 40px;
+			line-height: 40px;
+			width: 100px;
+			text-align: center;
+			color: #fff;
+			transition: 0.3s all;
+		}
+		li:hover{
+			width: 120px;
+		}
+		.box1{
+			background: #FCE1E5;
+		}
+		.box2{
+			background-color: #4caf50;
+		}
+		.box3{
+			background-color: #2d97fa;
+		}
+		.box4{
+			background-color: #ffff00;
+		}
+		.box5{
+			background-color: #eeeeee;
+		}
+
+		@media (max-width: 800px) {
+			ul{
+				display: flex;
+				width: 100%;
+				height: 50px;
+				bottom: 0;
+				top: auto;
+			}
+			li{
+				flex: 1;
+				width: auto;
+			}
+			li:hover{
+				width: auto;
+			}
+		}
+	</style>
+</head>
+<body>
+ <ul>
+	 <li class="box1">1</li>
+	 <li class="box2">2</li>
+	 <li class="box3">3</li>
+	 <li class="box4">4</li>
+	 <li class="box5">5</li>
+ </ul>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+		#div1{
+			width: 300px;
+			height: 300px;
+			background-color: #ccc;
+			text-align: center;
+			padding: 10px 0;
+			line-height: 300px;
+			margin: 100px auto;
+
+		}
+	</style>
+</head>
+<body>
+ <div id="div1">
+   请把文件拖到这里
+ </div>
+ <script>
+	 window.onload=function () {
+		 var oDiv=document.getElementById('div1');
+		 oDiv.ondragenter=function () {
+			 oDiv.innerText="释放鼠标"
+		 }
+		 oDiv.ondragleave=function () {
+			 oDiv.innerText="请把文件拖到这里"
+		 }
+		 oDiv.addEventListener('dragover', function (e) {
+			 e.preventDefault();
+		 });
+		 oDiv.addEventListener('drop',function (e) {
+			  e.preventDefault();
+
+			 console.log(e.dataTransfer.files )
+		 })
+	 }
+ </script>
+</body>
+</html>

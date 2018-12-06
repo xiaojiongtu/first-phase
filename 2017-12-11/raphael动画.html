@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script src="../lib/raphael.js"></script>
+</head>
+<body>
+<script>
+	window.onload=function () {
+		let paper=Raphael(0,0,800,800);
+		let ellipse=paper.ellipse(300,400,200,100);
+		ellipse.attr('fill','red');
+		ellipse.click(function () {
+		    this.animate({'transform':'s2 ,1 r30'},3000,'ease-in')
+		})
+	}
+</script>
+</body>
+</html>

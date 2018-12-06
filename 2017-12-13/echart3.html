@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script src="../lib/echarts.js"></script>
+	<style>
+		.box{
+			width: 800px;
+			height: 800px;
+			border: 1px solid;
+			margin: 40px auto;
+		}
+
+	</style>
+</head>
+<body>
+<div class="box" id="box"></div>
+<script>
+   let box=document.getElementById('box');
+   let options={
+   	 title:{
+		 text:'x市人口数量',
+		 subtext: '2017年(单位：万)',
+	 },
+	   series:[
+		   {
+		   	name:'学历比例',
+		   	type:'pie',
+			   center:['50%','50%'],
+			   radius:['30%','50%'],
+			   data: [
+				   {name:'小学',value:'33'},
+				   {name:'高中',value:'33'},
+				   {name:'大学',value:'43'},
+				   {name:'研究生',value:'53'},
+				   {name:'硕士生',value:'73'},
+			   ]
+		   }
+	   ]
+   };
+	let chart=echarts.init(box);
+	chart.setOption(options)
+</script>
+</body>
+</html>

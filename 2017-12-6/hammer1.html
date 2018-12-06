@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Title</title>
+	<script src="../lib/hammer.min.js"></script>
+	<style>
+		.box{
+			width: 200px;
+			height:200px;
+			background-color: yellow;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+<div class="box"></div>
+<div class="login_center"><a href="javascript:_login()"></a></div>
+<input type="button" value="进入1" >
+<script src="../lib/jquery-1.8.3.min.js"></script>
+<script>
+	let box=$(".box")[0];
+	let hammer=new Hammer(box,{});
+	//快速，小于250ms
+	hammer.on('tap',function () {
+		console.log(1);
+	});
+	//长按
+	hammer.on('press',function () {
+		console.log("长按")
+	})
+</script>
+</body>
+</html>

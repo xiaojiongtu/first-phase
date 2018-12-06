@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" value="创建一个线" id="btn1"><br>
+<svg width="400" height="400" id="svg1"></svg>
+<script>
+	let oSvg=document.getElementById('svg1');
+	let oBtn=document.getElementById('btn1');
+	oBtn.onclick=function () {
+		//let oL=document.createElement('line');//因为svg不属于标准的html标签
+		let ol=document.createElementNS('http://www.w3.org/2000/svg','line');
+		ol.setAttribute({
+			x1:200,
+			y1:200,
+			x2:400,
+			y2 :400,
+		});
+		ol.style.stroke='red';
+		oSvg.appendChild(ol);
+	}
+</script>
+</body>
+</html>

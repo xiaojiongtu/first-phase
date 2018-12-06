@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script src="../lib/raphael.js"></script>
+</head>
+<body>
+<script>
+	window.onload=function () {
+		let paper=Raphael(0,0,800,800);
+		let rect=paper.rect(100,100,400,400,20);
+		rect.attr('fill','yellow');
+		function fnClick() {
+			alert('abc')
+			rect.unclick(fnClick)
+			this.attr({
+				'fill':'red',
+				'width':'200',
+				'height':'200'
+			})
+		}
+		rect.click(fnClick);
+	}
+</script>
+</body>
+</html>

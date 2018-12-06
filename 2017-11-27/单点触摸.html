@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<meta name="viewport" content="width=device-width,user-scalable=0,initial-scale=1.0">
+	<style media="screen">
+		.box{
+			width: 100px;
+			height: 100px;
+			background-color: #4caf50;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+<div class="box">
+
+</div>
+<script>
+	window.onload=function () {
+		let oBox=document.getElementsByClassName('box')[0];
+        oBox.addEventListener('touchstart',function (e) {
+			//存距离
+			//e.targetTouches[0].pageX:鼠标距离左边的距离
+			//oBox.offsetLeft;是一个只读属性，返回当前元素左上角相对于 offsetParent 节点的左边界偏移的像素值。
+            let divX=e.targetTouches[0].pageX-oBox.offsetLeft;
+            let divY=e.targetTouches[0].pageY-oBox.offsetTop;
+            e.cancelBubble=true;
+            e.preventDefault();
+			 function fnMove(e) {
+				 oBox.style.left=e.targetTouches[0].pageX-divX+'px';
+				 oBox.style.top=e.targetTouches[0].pageY-divY+'px';
+				 e.preventDefault();
+
+			 }
+			 function fnEnd() {
+				 oBox.removeEventListener('touchmove',fnMove,false);
+                 oBox.removeEventListener('touchend',fnEnd,false)
+			 }
+             oBox.addEventListener('touchmove',fnMove,false);
+			 oBox.addEventListener('touchend',fnEnd,false)
+		},false)
+	}
+</script>
+</body>
+</html>

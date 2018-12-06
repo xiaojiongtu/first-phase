@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<meta name="viewport" content="width=device-width,user-scalable=no">
+	<script src="myscroll.js"></script>
+	<style>
+		.wrap{
+			width: 200px;
+			height: 300px;
+			background-color: #ddd;
+			border:  1px solid;
+			overflow: hidden;
+		}
+		.content{
+			background:-webkit-linear-gradient(left top,red,yellow) ;
+			width: 800px;
+			height: 800px;
+		}
+	</style>
+</head>
+<body>
+  <div class="wrap">
+	  <div class="content">
+	  </div>
+  </div>
+</body>
+<script>
+	window.onload=function () {
+		let myscroll=new MyScroll('.wrap',{
+            scrollX:true,
+			// freeScroll:true
+			bounce:true
+		});
+		myscroll.on('beforeScrollStart',function () {
+			 console.log("beforeScrollStart")
+		})
+		myscroll.on('scrollStart',function () {
+			console.log("scrollStart")
+		})
+		myscroll.on('scroll',function () {
+			console.log("scroll")
+		})
+		myscroll.on('scrollEnd',function () {
+			console.log("scrollEnd")
+		})
+	}
+</script>
+</html>

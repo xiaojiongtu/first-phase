@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style media="screen">
+		body {background:black; text-align:center;}
+		#c1 {background:white;}
+	</style>
+	<script>
+		window.onload=function () {
+			let oC=document.getElementById('c1');
+			let oBtn=document.getElementById('btn1');
+			let ct=oC.getContext('2d');
+			let  lastX,lastY;
+			oC.onmousedown=function (ev) {
+                  lastX=ev.offsetX;
+                  lastY=ev.offsetY;
+                  document.onmousemove=function (ev) {
+                  	  ct.beginPath();
+                      ct.moveTo(lastX,lastY);
+                      ct.lineTo(ev.offsetX,ev.offsetY);
+                      ct.stroke();
+                      lastX=ev.offsetX;
+                      lastY=ev.offsetY;
+
+				  }
+				  document.onmouseup=function () {
+					  document.onmouseup=null;
+					  document.onmousemove=null;
+				  }
+			}
+		}
+	</script>
+</head>
+<body>
+<input type="button" value="上传" id="btn1"><br>
+<canvas id="c1" width="400" height="300"></canvas>
+</body>
+</html>

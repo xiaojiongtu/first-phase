@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg width="800" height="600">
+	<line x1="100" y1="100" x2="400" y2="300" style="stroke:red; stroke-width:20" id="l1"></line>
+</svg>
+<script>
+	let ol=document.querySelector('#l1');
+	ol.onclick=function () {
+		alert(this.getAttribute('x1'))
+	}
+</script>
+</body>
+</html>

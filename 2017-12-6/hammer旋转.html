@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Title</title>
+	<script src="../lib/hammer.min.js"></script>
+	<style media="screen">
+		.box{
+			width: 200px;
+			height:200px;
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+adfasdfasdf
+<div class="box">
+这是一行文字
+</div>
+adfasdfasdf
+<script>
+	function $(...args){
+		return document.querySelectorAll(...args);
+	}
+	window.onload=function (){
+		let oBox=$('.box')[0];
+
+		let hammer=new Hammer(oBox);
+
+		let obj=hammer.get('rotate');
+
+		obj.set({ enable: true });
+
+		hammer.on('rotatestart', ev=>{});
+		hammer.on('rotatemove', ev=>{
+			oBox.style.transform=`rotate(${ev.rotation}deg)`;
+		});
+		hammer.on('rotateend', ev=>{});
+	};
+</script>
+</body>
+</html>

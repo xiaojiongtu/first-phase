@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+		body{
+			background-color: #FCE1E5;
+			text-align: center;
+		}
+		#c1{
+			background-color: #f6f8fa;
+		}
+	</style>
+</head>
+<body>
+<input type="color" id="color"><br>
+<canvas id="c1" width="500" height="500">
+
+</canvas>
+<script>
+	window.onload=function () {
+      let c1=document.getElementById("c1");//拿到canvas元素
+      let  ct=c1.getContext('2d');  //创建画布
+	  let oColor=document.getElementById('color');
+	  let color='black';
+      let  lastX,lastY;
+		//当鼠标按下的时候
+		oColor.onchange=function () {
+			color=this.value
+		}
+       c1.onmousedown=function (ev) {
+		   //线的开始，鼠标的位置
+		   // ct.moveTo(ev.offsetX,ev.offsetY);
+		   //(ev.offsetX,ev.offsetY)即是起点也是刚刚开始的终点,相对于便宜的位置吧，这个终点又作为下个线的起点
+		   lastX=ev.offsetX;
+		   lastY=ev.offsetY;
+
+		   //移到这
+		   c1.onmousemove=function (ev) {
+		    	ct.beginPath();
+		   	   ct.moveTo(lastX,lastY);
+			   ct.lineTo(ev.offsetX,ev.offsetY);
+			   lastX=ev.offsetX;
+			   lastY=ev.offsetY;
+			   ct.strokeStyle=color;
+			   ct.stroke()
+		   };
+		   c1.onmouseup=function () {
+			   c1.onmousemove=null;
+			   c1.onmouseup=null;
+		   }
+	   }
+	}
+</script>
+</body>
+</html>

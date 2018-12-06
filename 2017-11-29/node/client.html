@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+	数据库
+</div>
+
+<script>
+	//2.连接到服务器l
+	 let ws=new WebSocket('ws://localhost:8080/');
+	 ws.onopen=function () {
+		 alert('连接已断开');
+		 ws.send('abc')
+	 }
+	 ws.onmessage=function () {
+		 alert("有消息过来了")
+	 }
+	 ws.onclose=function () {
+		 alert("连接已断开")
+	 }
+	 ws.onerror=function () {
+		 alert("连接出错")
+	 }
+</script>
+</body>
+</html>

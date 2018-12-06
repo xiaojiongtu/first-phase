@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		body{
+			background-color: #FCE1E5;
+			text-align: center;
+		}
+		#c1{
+			background-color: #f6f8fa;
+		}
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height=800"></canvas>
+<script>
+	window.onload=function () {
+		let c1 = document.getElementById("c1");//拿到canvas元素
+		let gd = c1.getContext('2d');  //创建画布
+		let cx=400,cy=300,r=220;
+		//degree -> arc (角度转弧度)
+		function d2a(n){
+			return n*Math.PI/180;
+		}
+		//arc -> degree（弧度转角度）
+		function a2d(n){
+			return n*180/Math.PI;
+		}
+		function pie(startAng,endAng,color) {
+			gd.beginPath();
+			//#1
+			gd.moveTo(cx, cy);//圆心
+			//x=cx+sin(ang)*r
+			let x=cx+Math.sin(d2a(startAng))*r;
+			//y=cy-cos(ang)*r
+			let y=cy-Math.cos(d2a(startAng))*r;
+			//画一条线
+			gd.lineTo(x, y);
+			//#2
+			//gd.arc(cx, cy, r, startAng, endAng, 逆时针)
+			//再画一个弧度就可以闭合了
+			gd.arc(cx, cy, r, d2a(startAng-90), d2a(endAng-90), false);
+			//#3
+			gd.closePath();
+			//gd.stroke();
+			gd.fillStyle=color;
+			gd.fill();
+			//gd.stroke();
+		}
+		//1.数据
+          let data=[200,300,400,400,500];
+		  let colors=['red','blue','yellow','green',''];
+		//2.总和
+          let sum=data.reduce((tmp,item,index)=>tmp+item);
+		//3.每个数据占的角度
+		  let angs=data.map((item)=>360*item/sum);
+		//4.以上一个结束pie的角作为下一个pie的开始
+		 last=0;
+		 angs.forEach((ang,index)=>{
+		 	pie(last,last+ang,colors[index]);
+		 	last+=ang;
+		 })
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style media="screen">
+		.box {stroke:green;stroke-width: 10;}
+	</style>
+</head>
+<body>
+<svg width="400" height="600">
+	<line x1="200" y1="200" x2="400" y2="400" class="box"></line>
+</svg>
+<script>
+
+	let svg=document.querySelector('.box');
+	svg.onmouseover=function () {
+		this.style.stroke='red'
+	}
+	svg.onmouseleave=function () {
+		this.style.stroke=''
+	}
+</script>
+</body>
+</html>

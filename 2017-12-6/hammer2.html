@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script src="../lib/hammer.min.js"></script>
+	<style>
+		.box{
+			width: 200px;
+			height:200px;
+			background-color: yellow;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+<div class="box"></div>
+<div class="login_center"><a href="javascript:_login()"></a></div>
+<input type="button" value="进入1" >
+<script src="../lib/jquery-1.8.3.min.js"></script>
+<script>
+	let box=$(".box")[0];
+	let hammer=new Hammer(box,{});
+	//快速滑动
+	hammer.on('swipe',function () {
+		console.log(1);
+	})
+
+	//按住拖拽
+	hammer.on('pan',function () {
+		console.log("拖拽")
+	})
+</script>
+</body>
+</html>

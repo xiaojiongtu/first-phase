@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script src="myHammer.js"></script>
+	<style>
+		.box{
+			width: 200px;
+			height: 200px;
+			background-color: #4caf50;
+		}
+	</style>
+</head>
+<body>
+<div class="box">
+
+</div>
+<script>
+	let box=document.querySelector('.box')
+	let hammer=new myHammer(box);
+
+	hammer.on('press',function () {
+		console.log('press')
+	})
+
+	hammer.on('tap',function () {
+		console.log('tap')
+	})
+</script>
+</body>
+</html>

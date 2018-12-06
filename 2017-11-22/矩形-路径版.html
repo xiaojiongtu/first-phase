@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		body{
+			background-color: #FCE1E5;
+			text-align: center;
+		}
+		#c1{
+			background-color: #f6f8fa;
+		}
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height=800"></canvas>
+<script>
+	window.onload=function () {
+		let c1=document.getElementById("c1");//拿到canvas元素
+		let  ct=c1.getContext('2d');  //创建画布
+         //1.路径版
+		//ct.rect(x,y,w,h)  坐标和宽高
+		ct.rect(100,100,300,400);
+		ct.stroke();
+
+		//2.直接出图形的
+		ct.fillStyle='yellow';
+		ct.fillRect(300,500, 200 ,200)
+	}
+</script>
+</body>
+</html>

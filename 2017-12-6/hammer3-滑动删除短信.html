@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<script src="../lib/hammer.min.js"></script>
+	<style media="screen">
+		* {margin:0; padding:0; list-style:none}
+        #ul1 li{
+			height: 40px;
+			position: relative;
+			border: 1px solid #ddd;
+			background-color: #eee;
+			overflow: hidden;
+		}
+		.content{
+			position: absolute;
+			background-color: #fff;
+			z-index: 2;
+			line-height: 40px;
+			width: 100%;
+			transition: 0.3s all ease;
+			padding-left: 10px;
+			box-sizing: border-box;
+		}
+		#ul1 li .btns a {
+			float:right;
+			width:0;
+			height:40px;
+			line-height:40px;
+			text-align:center;
+			text-decoration:none;
+			transition:0.3s all ease;
+			position:relative;
+			overflow:hidden;
+		}
+		.btns{
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 40px;
+			line-height: 40px;
+			z-index: 1;
+			overflow: hidden;
+		}
+
+		#ul1 li .btns a.btn_del {background:red; color:white}
+		#ul1 li .btns a.btn_read {background:blue; color:white}
+	</style>
+</head>
+<body>
+<ul id="ul1">
+	<li>
+		<div class="content"><i></i>短信1</div>
+		<div class="btns">
+			<a href="#" class="btn_read"><span>已读</span></a>
+			<a href="#" class="btn_del"><span>删除</span></a>
+		</div>
+	</li>
+	<li>
+		<div class="content"><i></i>短信1</div>
+		<div class="btns">
+			<a href="#" class="btn_read"><span>已读</span></a>
+			<a href="#" class="btn_del"><span>删除</span></a>
+		</div>
+	</li>
+	<li>
+		<div class="content"><i></i>短信1</div>
+		<div class="btns">
+			<a href="#" class="btn_read"><span>已读</span></a>
+			<a href="#" class="btn_del"><span>删除</span></a>
+		</div>
+	</li>
+</ul>
+<script src="../lib/jquery-1.8.3.min.js"></script>
+<script>
+   $(function () {
+	   let oLi=$('#ul1 li');
+	   Array.from(oLi).forEach(li=>{
+		   let hammer=new Hammer(li,{});
+            hammer.on('swipeleft',function () {
+            	let oContent=$(li).children('.content');
+            	//全部清空
+				Array.from(oLi).forEach(li=>{
+					$($(li).children('.content')).css({
+						'transform':'translateX(0px)'
+					});
+					Array.from($(li).children('.btns').children('a')).forEach(a=>{
+				  	  	   $(a).css('width','0')
+					  })
+				  });
+				//单独的给样式
+				$(oContent).css({
+					'transform':'translateX(-100px)'
+				});
+				Array.from($(li).children('.btns').children('a')).forEach(a=>{
+					$(a).css('width','50px')
+				})
+			},false);
+            hammer.on('swiperight',function () {
+				let oContent=$(li).children('.content');
+				$(oContent).css({
+					'transform':'translateX(0px)'
+				});
+				Array.from($(li).children('.btns').children('a')).forEach(a=>{
+					$(a).css('width','0')
+				})
+
+			})
+		   $(li).children('.btns').children('.btn_del').click(function () {
+			   $(li).remove();
+		   })
+
+
+	   })
+   })
+</script>
+</body>
+</html>

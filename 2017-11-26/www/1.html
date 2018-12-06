@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" id="f1" name="f1" multiple>
+<input type="file" id="f2" name="f1" multiple>
+<input type="file" id="f3" name="f1" multiple>
+<button id="btn">提交</button>
+<script>
+	window.onload=function () {
+		var oFile=document.getElementById('f1');
+		var oFile2=document.getElementById('f2');
+		var oFile3=document.getElementById('f3');
+		var oBtn= document.getElementById('btn');
+		oBtn.onclick=function () {
+			var xhr=new XMLHttpRequest();
+			xhr.open('POST','/upload',true);
+			//表单
+			var formData=new FormData();
+			var files=Array.from(oFile.files).concat(Array.from(oFile2.files),Array.from(oFile3.files));
+			 files.forEach(file=>{
+			 	formData.append('f1',file);
+			 })
+			console.log(files)
+			formData.set('f1',oFile.files);
+			xhr.send(formData);
+			xhr.onreadystatechange=function () {
+				if(xhr.readyState==4){
+					alert(xhr.status)
+					if(xhr.status>=200&&xhr.status<=300||xhr.status==304){
+                             console.log(xhr.response)
+					}
+				}
+			}
+		}
+	}
+</script>
+</body>
+</html>

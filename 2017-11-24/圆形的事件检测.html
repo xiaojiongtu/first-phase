@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		body{
+			background-color: #FCE1E5;
+			text-align: center;
+		}
+		#c1{
+			background-color: #f6f8fa;
+		}
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height=800"></canvas>
+<script>
+	window.onload=function () {
+		let c1 = document.getElementById("c1");//拿到canvas元素
+		let ct = c1.getContext('2d');  //创建画布
+		let cx=400, cy=300, r=200;
+		//#2圆形
+		//点->圆心 的距离
+       c1.onmousemove=function (ev) {
+         let a=ev.offsetX-cx;
+         let b=ev.offsetY-cy;
+		   let dis=Math.sqrt(a*a+b*b);
+
+		   ct.beginPath();
+		   ct.arc(cx,cy,r,0,2*Math.PI,true);
+		   if(dis<=r){
+		   	  ct.fillStyle='yellow';
+		   }else {
+			   ct.fillStyle='red';
+		   }
+		   ct.fill();``
+	   }
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style media="screen">
+		.box {width:200px; height:200px; background:yellow; text-align:center; line-height:200px; margin: 100px auto 0; transform: rotate(0deg)}
+	</style>
+</head>
+<body>
+	<div class="box">
+		文字各种文字
+	</div>
+	<script>
+		window.onload=function () {
+			let oBox=document.querySelector('.box');
+			let old_ang=0;
+			oBox.addEventListener('touchstart',function (e) {
+               if(e.targetTouches.length>=2){
+               	//两个手指
+               	  let a=e.targetTouches[0].clientX-e.targetTouches[1].clientX;
+               	  let b=e.targetTouches[0].clientY-e.targetTouches[1].clientY;
+               	  let ang=Math.atan2(b,a)*180/Math.PI;
+               	  let star_ang=old_ang;
+                 e.preventDefault();
+                 function fnMove(e) {
+					 if(e.targetTouches.length>=2){
+						 let a=e.targetTouches[0].clientX-e.targetTouches[1].clientX;
+						 let b=e.targetTouches[0].clientY-e.targetTouches[1].clientY;
+						 let ang2=Math.atan2(b,a)*180/Math.PI;
+						 old_ang=star_ang+ang2-ang;
+						 oBox.style.transform=`rotate(${old_ang}deg)`
+					 }
+					 e.preventDefault();
+				 }
+                 function fnEnd(e) {
+					 oBox.removeEventListener('touchmove',fnMove,false);
+					 oBox.removeEventListener('touchend',fnEnd,false);
+				 }
+				 oBox.addEventListener('touchmove',fnMove,false);
+                 oBox.addEventListener('touchend',fnEnd,false);
+			   }
+			},false)
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+	<style media="screen">
+		.box {width:200px; height:200px; background:yellow; text-align:center; line-height:200px; margin: 100px auto 0; transform: rotate(0deg)}
+	</style>
+</head>
+<body>
+<div class="box">
+	文字各种文字
+</div>
+<script>
+	window.onload=function () {
+		let oBox=document.querySelector('.box');
+		oBox.addEventListener('touchstart',function (e) {
+             e.preventDefault();
+			let dis=Math.sqrt(Math.pow(e.targetTouches[0].clientX-e.targetTouches[1].clientX, 2)+Math.pow(e.targetTouches[0].clientY-e.targetTouches[1].clientY, 2));			let w=oBox.offsetWidth;
+			let h=oBox.offsetHeight;
+			function fnMove(e) {
+				if(e.targetTouches.length>=2){
+					let dis2=Math.sqrt(Math.pow(e.targetTouches[0].clientX-e.targetTouches[1].clientX,2)+Math.pow(e.targetTouches[0].clientY-e.targetTouches[1].clientY,2))
+					//w2=dis2*w/dis
+                    oBox.style.width=dis2*w/dis+'px';
+					oBox.style.lineHeight=oBox.style.height=dis2*height/dis2+"px";
+				}
+			}
+			function fnEnd(e) {
+				oBox.removeEventListener('touchtart',fnMove,false);
+				oBox.removeEventListener('touchend',fnEnd,false)
+			}
+			if(e.targetTouches.length>=2){
+				e.preventDefault();
+				oBox.addEventListener("touchstart",fnMove,false);
+				oBox.addEventListener("touchend",fnEnd,false)
+			}
+		})
+	}
+</script>
+</body>
+</html>

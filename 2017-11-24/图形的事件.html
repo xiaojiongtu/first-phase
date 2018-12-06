@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		body{
+			background-color: #FCE1E5;
+			text-align: center;
+		}
+		#c1{
+			background-color: #f6f8fa;
+		}
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height=800"></canvas>
+<script>
+	window.onload=function () {
+		let c1 = document.getElementById("c1");//拿到canvas元素
+		let ct = c1.getContext('2d');  //创建画布
+		let l=50,t=50,w=100,h=100;
+		ct.strokeRect(l,t,w,h);
+
+		//是canvas元素的事件，不是画布的
+		c1.onclick=function (ev) {
+            if(ev.offsetX>=l&&ev.offsetX<=l+w&&ev.offsetY>=t&&ev.offsetY<=t+h){
+            	 ct.clearRect(0,0,c1.width,c1.height);
+				ct.strokeRect(l+30,t+30,w+30,h+30);
+			}else {
+            	alert(2)
+			}
+		}
+
+	}
+</script>
+</body>
+</html>

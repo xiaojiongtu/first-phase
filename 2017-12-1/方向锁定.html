@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Title</title>
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		html{
+			font-size: 20px;
+		}
+		#banner {width:25rem;height:7.8rem;overflow:hidden;}
+		#banner ul {width:9999rem; transform: translateX(0px);}
+		#banner li {width:25rem;height:7.8rem;float:left; line-height:7.8rem; text-align:center;}
+		#wrap {background:#CCC;}
+		#content {background:#fff;}
+	</style>
+</head>
+<body>
+<div id="wrap">
+	<div id="content">
+		<div id="banner">
+			<ul>
+				<li style="background:#FC0;">1</li>
+				<li style="background:#F0C;">2</li>
+				<li style="background:#0CF;">3</li>
+				<li style="background:#F0C;">4</li>
+				<li style="background:#0FC;">5</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<script>
+	window.onload=function () {
+		//rem
+		document.documentElement.style.fontSize=document.documentElement.clientWidth*20/500+'px';
+		//拖
+		let banner=document.getElementById('banner');
+		banner.addEventListener('touchstart',function (e) {
+			let startX=e.targetTouches[0].clientX;
+			let startY=e.targetTouches[0].clientY;
+			let dir='';
+
+			function fnMove(e) {
+				if(!dir){
+					if(Math.abs(e.targetTouches[0].clientX-startX)>=5){
+						dir='x';
+					}else  if(Math.abs(e.targetTouches[0].clientY-startY)>=5){
+						dir='y';
+					}
+				}else {
+					if(dir=='x'){           //处理banner移动
+
+					}else if(dir=='y'){     //处理页面移动
+
+					}
+				}
+			}
+			function fnEnd(e) {
+				banner.removeEventListener('touchstart',fnMove,false);
+				banner.removeEventListener('touchend',fnEnd,false);
+			}
+			banner.addEventListener('touchstart',fnMove,false)
+			banner.addEventListener('touchend',fnEnd,false)
+		},false)
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		body{
+			background-color: #FCE1E5;
+			text-align: center;
+		}
+		#c1{
+			background-color: #f6f8fa;
+		}
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height=800"></canvas>
+<script>
+	window.onload=function () {
+		let c1 = document.getElementById("c1");//拿到canvas元素
+		let ct = c1.getContext('2d');  //创建画布
+		ct.arc(300, 300, 100, 0*Math.PI/180, 360*Math.PI/180, true);
+		ct.stroke();
+	}
+</script>
+</body>
+</html>
