@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="../lib/d3.js"></script>
+</head>
+<body>
+<script>
+	let queue=d3.queue();
+    //1.添加任务
+	queue.defer(function (a,b,cb) {
+		setTimeout(function () {
+			cb(null,a+b);
+
+		},500)
+	},12,44);
+	queue.defer(function (num,cb) {
+	   setTimeout(function () {
+		   cb(null,5*num);
+	   },700)
+	},5)
+
+	queue.await(function (err,res1,res2) {
+		console.log(err);
+		console.log(res1,res2)
+	})
+</script>
+</body>
+</html>

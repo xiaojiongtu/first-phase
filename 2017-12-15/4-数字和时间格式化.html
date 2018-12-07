@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="../lib/d3.js"></script>
+</head>
+<body>
+<script>
+	//数字格式化生成器
+
+    //创建format generator
+    let gen=d3.format('10.4f')//c语言中小数点后保留3位
+	console.log(gen(22.3333333));
+	//日期格式化生成器
+	let gen1=d3.timeFormat('%Y年%m月%d日 %H:%M:%S');
+	console.log(gen1(Date.now()))
+</script>
+</body>
+</html>
