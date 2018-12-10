@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<link rel="stylesheet" href="css/public.css">
+	<style>
+
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height="600">
+
+</canvas>
+<script src="js/common.js"></script>
+<script>
+ class Sprite{
+ 	//w h x y rotate
+	 //draw(),检测碰撞
+	 constructor(img, width, height,x=0,y=0,rotation=0){
+	 	  this.img=img;
+	 	  this.width=width;
+	 	  this.height=height;
+	 	  this.sx=0;
+	 	  this.sy=0;
+	 	  this.x=x;
+	 	  this.y=y;
+	 	  this.rotation=rotation;
+	 }
+	 draw(gd){
+		 gd.save();
+		 gd.translate(this.x,this.y);
+		 gd.rotate(d2a(this.rotation));
+		 gd.drawImage(this.img,0,0,this.width,this.height,-this.width/2,-this.height/2,this.width,this.height);
+
+		 gd.restore();
+	 }
+ }
+  window.onload=function () {
+	  let oC=document.getElementById('c1');
+	  let gd=oC.getContext('2d');
+	  loadImages({
+		  fish1: 'img/fish1.png',
+		  coin1: 'img/coinAni1.png',
+		  cannon1: 'img/cannon1.png'
+	  }, function (imgs){
+			 let w=55,h=37,x=200,y=150;
+			 gd.save();
+		     gd.translate(x+w/2,y+h/2);
+			 gd.rotate(d2a(90));
+			 gd.drawImage(imgs.fish1,0,0,w,h,-w/2,-h/2,w,h);
+
+		     gd.restore();
+	  })
+  }
+</script>
+</body>
+</html>
