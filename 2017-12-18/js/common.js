@@ -1,3 +1,4 @@
+let _imgs=null;
 function loadImages(json,fn) {
 	let res={};
 	let total=0;
@@ -9,7 +10,8 @@ function loadImages(json,fn) {
 		oImg.onload=function () {
 			complete++;
 			if (total==complete){
-				fn(res);
+				_imgs=res
+				fn();
 			}
 		}
 		oImg.onerror =function () {
