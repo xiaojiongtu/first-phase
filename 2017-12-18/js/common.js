@@ -1,5 +1,4 @@
-
-_imgs=null;
+let _imgs=null;
 function loadImages(json,fn) {
 	let res={};
 	let total=0;
