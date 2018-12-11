@@ -18,6 +18,9 @@
  	//w h x y rotate
 	 //draw(),检测碰撞
 	 constructor(img, width, height,x=0,y=0,rotation=0){
+	 	if(!width||!height){
+	 		throw new Error('error')
+		}
 	 	  this.img=img;
 	 	  this.width=width;
 	 	  this.height=height;
@@ -39,6 +42,9 @@
  class Fish extends Sprite{
      //宽高不用给，给类型内部判断是哪种类型的鱼
      constructor(type,x=0,y=0,rotation=0){
+     	if(type>5||type<1){
+     		throw new Error("unknow type")
+		}
          const SIZE=[
              null,
 			 {w:55,h:37},
@@ -64,63 +70,47 @@
           this.sy=this.height*this.currentFrame;
 	 }
  }
+ class Cannon extends Sprite{
+ 	constructor(type,x=0,y=0,rotation=0){
+		if(type>7||type<1){
+			throw new Error("unknow type")
+		}
+ 		const SIZE=[
+ 			null,
+			{w: 74, h: 74},
+			{w: 74, h: 76},
+			{w: 74, h: 76},
+			{w: 74, h: 83},
+			{w: 74, h: 85},
+			{w: 74, h: 90},
+			{w: 74, h: 94},
+		];
+		//父级
+		super(_imgs[`cannon${type}`],SIZE[type].w,SIZE[type].h,rotation=0);
+		//子级
+		this.type=type;
+
+	}
+ }
   window.onload=function () {
 	  let oC=document.getElementById('c1');
 	  let gd=oC.getContext('2d');
-	  loadImages({
-		  fish1: 'img/fish1.png',
-		  fish2: 'img/fish2.png',
-		  fish3: 'img/fish3.png',
-		  fish4: 'img/fish4.png',
-		  fish5: 'img/fish5.png',
-		  coin1: 'img/coinAni1.png',
-		  cannon1: 'img/cannon1.png',
-		  cannon2: 'img/cannon2.png',
-		  cannon3: 'img/cannon3.png',
-		  cannon4: 'img/cannon4.png',
-		  cannon5: 'img/cannon5.png',
-		  cannon6: 'img/cannon6.png',
-		  cannon7: 'img/cannon7.png',
-	  }, function (imgs){
-
-		/*  let fish1=new Sprite(imgs.fish1,55,37);
-          fish1.x=200;
-          fish1.y=200;
-          let i=0;
-          let tick=0;
-		  setInterval(function () {
-		      gd.clearRect(0,0,oC.width,oC.height);
-              fish1.x++;
-              //鱼的高度乘上i
-              fish1.sy=fish1.height*i;
-              // fish1.rotation++;
-              fish1.draw(gd);
-              //摆尾巴
-              tick++;
-              if(tick>=10){
-                  tick=0;
-                  i++;
-                  //鱼的四种状态
-                  if(i>=4){
-                      i=0;
-                  }
-			  }
-
-          },16)*/
-		let fish1=new Fish(2);
-		fish1.x=200;
-		fish1.y=200;
-		let tick=0;
+	  const W=oC.width;
+	  const H=oC.height;
+	  loadImages(_resources, function (imgs){
+	  	//因为炮台只是个装饰，不用再设一个对象
+	  	let tower=new Sprite(_imgs.tower,765,71);
+	  	let cannon=new Cannon(1);
+	  	tower.y=H-71/2;
+	  	tower.x=W/2;
+	  	cannon.x=443;
+	  	cannon.y=584;
 		function animate(){
 		    requestAnimationFrame(animate);
             gd.clearRect(0,0,oC.width,oC.height);
-            fish1.x++;
-            fish1.draw(gd);
-            tick++;
-            if (tick>=10){
-                tick=0;
-                fish1.nextFrame();
-            }
+            //先画谁谁在下面，先画炮台
+			tower.draw(gd);
+			cannon.draw(gd);
 		}
 		requestAnimationFrame(animate);
       })

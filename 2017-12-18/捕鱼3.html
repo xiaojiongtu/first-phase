@@ -39,6 +39,9 @@
  class Fish extends Sprite{
      //宽高不用给，给类型内部判断是哪种类型的鱼
      constructor(type,x=0,y=0,rotation=0){
+     	if(type>5||type<1){
+     		throw new Error("unknow type")
+		}
          const SIZE=[
              null,
 			 {w:55,h:37},
@@ -64,24 +67,32 @@
           this.sy=this.height*this.currentFrame;
 	 }
  }
+ class Cannon extends Sprite{
+ 	constructor(type,x=0,y=0,rotation=0){
+		if(type>7||type<1){
+			throw new Error("unknow type")
+		}
+ 		const SIZE=[
+ 			null,
+			{w: 74, h: 74},
+			{w: 74, h: 76},
+			{w: 74, h: 76},
+			{w: 74, h: 83},
+			{w: 74, h: 85},
+			{w: 74, h: 90},
+			{w: 74, h: 94},
+		];
+		//父级
+		super(_imgs[`cannon${type}`],SIZE[type].w,SIZE[type].h,rotation=0);
+		//子级
+		this.type=type;
+
+	}
+ }
   window.onload=function () {
 	  let oC=document.getElementById('c1');
 	  let gd=oC.getContext('2d');
-	  loadImages({
-		  fish1: 'img/fish1.png',
-		  fish2: 'img/fish2.png',
-		  fish3: 'img/fish3.png',
-		  fish4: 'img/fish4.png',
-		  fish5: 'img/fish5.png',
-		  coin1: 'img/coinAni1.png',
-		  cannon1: 'img/cannon1.png',
-		  cannon2: 'img/cannon2.png',
-		  cannon3: 'img/cannon3.png',
-		  cannon4: 'img/cannon4.png',
-		  cannon5: 'img/cannon5.png',
-		  cannon6: 'img/cannon6.png',
-		  cannon7: 'img/cannon7.png',
-	  }, function (imgs){
+	  loadImages(_resources, function (imgs){
 
 		/*  let fish1=new Sprite(imgs.fish1,55,37);
           fish1.x=200;
