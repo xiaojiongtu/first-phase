@@ -14,7 +14,7 @@ class Cannon extends Sprite{
 			{w: 74, h: 94},
 		];
 		//父级
-		super(new DrawRect(_imgs[`cannon${type}`],0,0,SIZE[type].w,SIZE[type].h),x,y,rotation=0);
+		super(new DrawRect(_imgs[`cannon${type}`],0,0,SIZE[type].w,SIZE[type].h),x,y,rotation);
 		//子级
 		this.SIZE=SIZE;
 
@@ -24,6 +24,8 @@ class Cannon extends Sprite{
 
     	setType(type){
 		this.type=type;
-		this.setDrawRect(new  DrawRect(_imgs[`cannon${type}`],0,0,this.SIZE[type].w,this.SIZE[type].h),x,y,rotation=0)
+			this.setDrawRect(
+				new DrawRect(_imgs[`cannon${type}`], 0, 0, this.SIZE[type].w, this.SIZE[type].h)
+			);
 	}
 }

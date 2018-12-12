@@ -43,12 +43,14 @@
 		  };
 
 		  //加号和减号
+
           let btnMinus=new Button(
           	  new DrawRect(_imgs.tower,135,75,36,28),
 			  new DrawRect(_imgs.tower,91,75,36,28)
 			  );
-           btnMinus.x=371;
-           btnMinus.y=566;
+		  btnMinus.x=371;
+		  btnMinus.y=566;
+
           let btnPlus=new Button(
 			  new DrawRect(_imgs.tower,47,75,36,28),
 			  new DrawRect(_imgs.tower,3,75,36,28)
@@ -65,7 +67,7 @@
 		  };
 		  btnPlus.onclick=function () {
 			  if(cannon.type<7){
-				  cannon.setType(cannon.type-1)
+				  cannon.setType(cannon.type+1)
 			  }else {
 				  cannon.setType(7)
 			  }
@@ -73,7 +75,7 @@
 		  let aBtn=[btnMinus,btnPlus];
 		  oC.onmousedown=function (e) {
              aBtn.forEach(btn=>{
-             	btn.down(e.offsetX,e.offsetY);
+				 btn.down(e.offsetX,e.offsetY);
 			 })
 		  };
 		  oC.onmouseup=function (e) {
