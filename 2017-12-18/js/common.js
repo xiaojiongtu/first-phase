@@ -13,7 +13,8 @@ const _resources={
 	cannon5: 'img/cannon5.png',
 	cannon6: 'img/cannon6.png',
 	cannon7: 'img/cannon7.png',
-	tower:'img/bottom.png'
+	tower:'img/bottom.png',
+	bullet:'img/bullet.png'
 }
 function loadImages(json,fn) {
 	let res={};

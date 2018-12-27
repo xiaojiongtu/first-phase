@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<link rel="stylesheet" href="css/public.css">
+	<style>
+
+	</style>
+</head>
+<body>
+<canvas id="c1" width="800" height="600">
+
+</canvas>
+<script src="js/common.js"></script>
+<script src="js/drawRect.js"></script>
+<script src="js/sprite.js"></script>
+<script src="js/fish.js"></script>
+<script src="js/cannon.js"></script>
+<script src="js/button.js"></script>
+<script src="js/bullet.js"></script>
+<script>
+  window.onload=function () {
+	  let oC=document.getElementById('c1');
+	  let gd=oC.getContext('2d');
+	  const W=oC.width;
+	  const H=oC.height;
+	  loadImages(_resources, function (imgs){
+			//因为炮台只是个装饰，不用再设一个对象，炮台
+			let tower=new Sprite(new DrawRect(_imgs.tower,0,0,765,71));
+			tower.y=H-71/2;
+			tower.x=W/2;
+
+			//炮
+		    let cannon=new Cannon(1);
+		    cannon.x=443;
+		    cannon.y=584;
+		    //炮跟着鼠标转
+		  oC.onmousemove=function (e) {
+             let a=e.offsetX-cannon.x;
+             let b=e.offsetY-cannon.y;
+             let ang=a2d(Math.atan2(b,a))+90;
+             cannon.rotation=ang;
+		  };
+
+		  //加号和减号
+
+          let btnMinus=new Button(
+          	  new DrawRect(_imgs.tower,135,75,36,28),
+			  new DrawRect(_imgs.tower,91,75,36,28)
+			  );
+		  btnMinus.x=371;
+		  btnMinus.y=566;
+
+          let btnPlus=new Button(
+			  new DrawRect(_imgs.tower,47,75,36,28),
+			  new DrawRect(_imgs.tower,3,75,36,28)
+		  );
+		  btnPlus.x=516;
+		  btnPlus.y=566;
+
+		  btnMinus.onclick=function () {
+		  	if(cannon.type>1){
+		  		cannon.setType(cannon.type-1)
+			}else {
+		  		cannon.setType(1)
+			}
+		  };
+		  btnPlus.onclick=function () {
+			  if(cannon.type<7){
+				  cannon.setType(cannon.type+1)
+			  }else {
+				  cannon.setType(7)
+			  }
+		  };
+		  let aBtn=[btnMinus,btnPlus];
+		  oC.onmousedown=function (e) {
+             aBtn.forEach(btn=>{
+				 btn.down(e.offsetX,e.offsetY);
+			 })
+		  };
+		  oC.onmouseup=function (e) {
+			  aBtn.forEach(btn=>{
+				  btn.up(e.offsetX,e.offsetY);
+			  })
+		  }
+		function animate(){
+		    requestAnimationFrame(animate);
+            gd.clearRect(0,0,oC.width,oC.height);
+            //先画谁谁在下面，先画炮台
+			tower.draw(gd);
+			cannon.draw(gd);
+			btnMinus.draw(gd);
+			btnPlus.draw(gd);
+		}
+		requestAnimationFrame(animate);
+
+      })
+  }
+</script>
+</body>
+</html>

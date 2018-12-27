@@ -1,0 +1,18 @@
+// 轮播图--左右滑动和切换  
+   var mySwiper = new Swiper('.swiper-container',{  
+       pagination: '.pagination',  
+       loop:false,  
+       mode: 'horizontal',  
+       freeMode:false,  
+       touchRatio:0.5,  
+       longSwipesRatio:0.1,  
+       threshold:50,  
+       followFinger:false,  
+       observer: true,//修改swiper自己或子元素时，自动初始化swiper  
+       observeParents: true,//修改swiper的父元素时，自动初始化swiper  
+       onSlideChangeEnd:function(swiper){ // 当滑动结束后---月份日期切换同步左右左右切换  
+           changeMonth();  
+       }  
+   });  
+
+	小程序id：wxaa7cb948001e0656
