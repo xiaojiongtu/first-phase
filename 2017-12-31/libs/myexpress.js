@@ -8,6 +8,7 @@ module.exports=function () {
 		let {pathname,query}=url.parse(req.url,true);
   		req.query=query;
   		res.send=function(any){
+  			console.log(any instanceof Buffer || typeof any ==='string');
   			if(any instanceof Buffer || typeof any ==='string'){
                 res.write(any);
 				console.log(res.write());

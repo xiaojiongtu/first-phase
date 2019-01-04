@@ -1,0 +1,9 @@
+!function () {
+    document.getElementById('bankCard').onkeyup = function (event) {
+        var v = this.value;
+        if(/\S{5}/.test(v)){
+                this.value = v.replace(/\D/g, '').replace(/(\d{4})/g, "$1 ");
+               }
+        
+    };
+}();

@@ -14,5 +14,5 @@ server.get('/',(req,res,next)=>{
 server.get('/',(req,res,next)=>{
 	console.log('post');
 	res.send('add');
-	// res.end();
+	res.end();
 })

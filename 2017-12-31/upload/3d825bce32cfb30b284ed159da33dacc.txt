@@ -1,0 +1,87 @@
+.on("keyup",function(){
+	        	var t=$(this),
+	        		val=t.val(),
+	        		valLength=val.length,
+	        		pIndex=val.lastIndexOf(".");
+				if(val[0]=="0"&&val[1]!=="."){
+					val=t.val("0");
+				}else if(pIndex<0){
+					pIndex=valLength;
+					t.val(val+"");
+				}
+             }).on("blur",function(){
+				var t=$(this),
+						val=t.val(),
+						valLength=val.length,
+						pIndex=val.lastIndexOf(".");
+				 if(pIndex==-1){
+					t.val(val+".00");
+				}else if(valLength-pIndex<=2){
+					 t.val(val+"0")
+				 }
+			});
+
+1.税e贷-信息完善；
+2.税e贷-等待确认，提额成功
+3.税e贷-选择客户经理
+4.商户app-下载页；
+5.税e贷信息完善新增
+
+
+修改信用卡还款bug；
+银行卡快捷支付新增时间插件；
+银行卡快捷支付；
+缴气费代扣活动；
+缴气费代扣活动-修改；
+交党费身份证验证修改；
+我的卡券-无卡券；
+我的卡券-有卡券；
+银行卡快捷支付新增；
+交党费欠费详情页修改；
+我的卡券-有卡券；
+我的卡券-确认订单
+ $("#pw2,#pw").on("input",function(){
+				  if($("#pw").val().length>=6&&$("#pw2").val().length>=6){
+					  $(".main-btn").prop("disabled",false);
+				  }
+			  })
+
+
+身份证不能输入中文
+ onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"
+
+     var dt = dt.replace(/-/g,"/");  
+     //替换所有“-”，g为全局标志，另外如果加i就忽略大小写：2010/01/05
+
+/
+https://xiaojiongtu.github.io/app/ApplyLoan/借还记录.html
+
+https://xiaojiongtu.github.io/app/ApplyLoan/税e贷-选择客户经理.html
+https://xiaojiongtu.github.io/app/响应式/index.html
+https://xiaojiongtu.github.io/app/APP-html/提现-选择银行卡.html
+.server-list{display: flex; display: -webkit-flex;  flex-wrap:wrap;flex-direction: row;width:100%;padding: 0.4rem 0;background: #fff;}
+.server-list a{ width:25%;display: block;padding: 0.2rem 0;}
+
+
+
+
+控制光标位置：
+function setFocus(el) {
+    el = el[0]; // jquery 对象转dom对象  
+    el.focus();
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    var sel = window.getSelection();
+    //判断光标位置，如不需要可删除
+    if(sel.anchorOffset!=0){
+        return;
+    };
+    sel.removeAllRanges();
+    sel.addRange(range);
+};
+
+         var splitNum=val.split('.');
+             var interNum=splitNum[0];
+            var deciNum=val-interNum;
+            $(this).val(interNum.substring(0,9)+deciNum);
