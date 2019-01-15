@@ -1,9 +1,14 @@
 const express=require('express');
 const consolidate=require('consolidate');
+const mysql=require('mysql');
+const fs=require('fs');
+const ejs=require('ejs');
 
 
 let server=express();
 server.listen(8080);
+
+let db=mysql.createPool({host:'localhost',user:'root',password:'',database:'20171229',port:'3306'});
 
 //×
 //server.use(consolidate);
@@ -11,17 +16,12 @@ server.listen(8080);
 //1.选择一种模板引擎
 server.engine('html', consolidate.ejs);
 //2.指定模板文件的扩展名
-server.set('view engine', 'ejs');
+server.set('view engine', 'pug');
 //3.指定模板文件的路径
-server.set('views', './template');
+server.set('views', './template_pug');
 
 server.get('/', (req, res)=> {
-	res.render('3', {arr: [
-			{username:'blue',age:16,gender:'男'},
-			{username:'blue1',age:13,gender:'男'},
-			{username:'blue2',age:14,gender:'女'},
-			{username:'blue3',age:12,gender:'男'},
-		]})
-})
+	 res.render('1',{a:1,b:2,arr:['w','e','2','e']});
+});
 
 
