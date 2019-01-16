@@ -6,5 +6,10 @@ module.exports={
 	mysql_port:3306,
 	mysql_user:'root',
 	mysql_password:'',
-	mysql_dbname:'anjuke'
+	mysql_dbname:'anjuke',
+
+	//超级管理员配置
+
+	root_username:'lll',
+	root_password:'e10adc3949ba59abbe56e057f20f883e',
 }

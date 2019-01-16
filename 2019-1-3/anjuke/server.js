@@ -15,6 +15,10 @@
  //连接数据库
   let db=mysql.createPool({host:config.mysql_host,user:config.mysql_user,password:config.mysql_password,port:config.mysql_port,database:config.mysql_dbname})
 
+ server.use((req,res,next)=>{
+ 	req.db=db;
+ 	next();
+ });
  //中间件
  //普通post数据
  server.use(bodyParser.urlencoded({extended:false}));
