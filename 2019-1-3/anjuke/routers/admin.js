@@ -93,72 +93,122 @@ admin_router.post('/login',(req,res)=>{
  admin_router.get('/',(req,res)=>{
 	res.redirect('/admin/house');
 });
+ //显示，获取
  admin_router.get('/house',(req,res)=>{
- 	req.db.query(`SELECT * FROM house_table`,(err,data)=>{
+ 	//分页
+ 	const  size=10;
+ 	let page=req.query.page;
+ 	if(!page){
+ 		page=1;
+	}else if(!/^[1-9]\d*$/.test(page)){
+ 		page=1;
+	}
+	let start=(page-1)*size;
+
+	 //搜索
+	 let link_reg='1=1';
+ 	if(req.query.keyword){
+ 		let keys=req.query.keyword.split(/\s+/g);
+		link_reg=keys.map(item=>`title LIKE'%${item}%'`).join(' OR ')
+	}
+    //1.获取数据
+ 	req.db.query(`SELECT * FROM house_table WHERE ${link_reg} LIMIT ${start},${size}`,(err,house_data)=>{
  		if(err){
  			res.sendStatus(500)
 		}else{
-			res.render('index',{data});
+ 			//2.获取总的页码
+			req.db.query(`SELECT COUNT(*) AS c FROM house_table WHERE ${link_reg} `,(err,data)=>{
+                 if(err){
+					 res.sendStatus(500)
+				 }else if(data[0].length===0){
+					 res.sendStatus(500)
+                 }else{
+					 res.render('index',{
+					 	 data:house_data,
+						 show_page_count:9,
+						 cur_page:parseInt(page),
+						 page_count:Math.ceil(data[0].c/size),
+						 keyword:req.query.keyword
+					 });
+				 }
+			})
 		}
 	})
 
 });
 
+//添加 || 修改
  admin_router.post('/house',(req,res)=>{
 	 // console.log(req.body);
-
 	 //时间问题
-       req.body['sale_time']=Math.floor(new Date(req.body['sale_time']).getTime()/1000);
-       req.body['submit_time']=Math.floor(new Date(req.body['submit_time']).getTime()/1000);
+	 req.body['sale_time']=Math.floor(new Date(req.body['sale_time']).getTime()/1000);
+	 req.body['submit_time']=Math.floor(new Date(req.body['submit_time']).getTime()/1000);
 
-       let aImgPath=[];
-       let aImgRealPath=[];   //真正的磁盘地址
-	 for(let i=0;i<req.files.length;i++){
-		 switch (req.files[i].fieldname) {
-				case 'main_img':
-					req.body['main_img_path']=req.files[i].filename;
-					req.body['main_img_real_path']=req.files[i].path.replace(/\\/g,'\\\\');
-					break;
-				case 'img':
-					aImgPath.push(req.files[i].filename);
-					aImgRealPath.push(req.files[i].path.replace(/\\/g,'\\\\'));
-					break;
-				case 'property_img':
-					req.body['property_img_paths']=req.files[i].filename;
-					req.body['property_img_real_paths']=req.files[i].path.replace(/\\/g,'\\\\');
-					break;
-			}
-		}
+	 if(req.body['is_mod']==='true'){
+			 const fields=['title','sub_title','position_main','position_second','ave_price','area_min','area_max','tel','sale_time','submit_time','building_type','property_types'];
+			 let arr=[];
+			 fields.forEach(item=>{
+			 	 arr.push(`${item}='${req.body[item]}'`)
+			 });
+			 let sql=`UPDATE house_table SET ${arr.join(',')} WHERE ID='${req.body['old_id']}'`;
+			 req.db.query(sql, err=>{
+				 if(err){
+					 console.log(err);
+					 res.sendStatus(500);
+				 }else{
+					 res.redirect('/admin/house');
+				 }
+			 });
+		 }else {
+			 let aImgPath=[];
+			 let aImgRealPath=[];   //真正的磁盘地址
+			 for(let i=0;i<req.files.length;i++){
+				 switch (req.files[i].fieldname) {
+					 case 'main_img':
+						 req.body['main_img_path']=req.files[i].filename;
+						 req.body['main_img_real_path']=req.files[i].path.replace(/\\/g,'\\\\');
+						 break;
+					 case 'img':
+						 aImgPath.push(req.files[i].filename);
+						 aImgRealPath.push(req.files[i].path.replace(/\\/g,'\\\\'));
+						 break;
+					 case 'property_img':
+						 req.body['property_img_paths']=req.files[i].filename;
+						 req.body['property_img_real_paths']=req.files[i].path.replace(/\\/g,'\\\\');
+						 break;
+				 }
+			 }
 
-	 	delete req.body['is_mod'];
-	    delete  req.body[ 'old_id'];
-		req.body['ID']=common.uuid();
-	    req.body['admin_ID']=req.admin_ID;
-        req.body['img_paths']=aImgPath.join(',');
-        req.body['img_real_paths']=aImgRealPath.join(',');
+			 delete req.body['is_mod'];
+			 delete  req.body[ 'old_id'];
+			 req.body['ID']=common.uuid();
+			 req.body['admin_ID']=req.admin_ID;
+			 req.body['img_paths']=aImgPath.join(',');
+			 req.body['img_real_paths']=aImgRealPath.join(',');
 
-        let arrField=[];
-        let arrValue=[];
+			 let arrField=[];
+			 let arrValue=[];
 
-       for(let name in req.body){
-       	  arrField.push(name);
-       	  arrValue.push(req.body[name])
-	   }
-	 let sql=`INSERT INTO house_table (${arrField.join(',')}) VALUES('${arrValue.join("','")}')`;
+			 for(let name in req.body){
+				 arrField.push(name);
+				 arrValue.push(req.body[name])
+			 }
+			 let sql=`INSERT INTO house_table (${arrField.join(',')}) VALUES('${arrValue.join("','")}')`;
 
-	   req.db.query(sql,err=>{
-	   	 if(err){
-			 console.log(err);
-			 res.sendStatus(500)
-		 }else{
-	   	 	res.redirect('/admin/house')
+			 req.db.query(sql,err=>{
+				 if(err){
+					 console.log(err);
+					 res.sendStatus(500)
+				 }else{
+					 res.redirect('/admin/house')
+				 }
+			 })
 		 }
-	   })
-
  });
+
+ //删除
  admin_router.get('/house/delete',(req,res)=>{
     let ID=req.query['id'];
-
     //1.删除关联的图片
 	 console.log(ID)
 	 req.db.query(`SELECT * FROM house_table WHERE ID='${ID}'`,(err,data)=>{
@@ -176,6 +226,7 @@ admin_router.post('/login',(req,res)=>{
 				arr.push(item)
 			});
          console.log(arr);
+			//2.删除数据本身  ,删除异步操作
 			//删除
            let i=0;
             next();
@@ -206,10 +257,33 @@ admin_router.post('/login',(req,res)=>{
 		}
 	 })
 
-	 //2.删除数据本身  ,删除异步操作
 
  });
 
+ //修改
+/*admin_router.get('/house/modify',(req,res)=>{
+
+});*/
+//接口
+
+admin_router.get('/house/get_data',(req,res)=>{
+   let id=req.query.id;
+   if(!id){
+   	   res.sendStatus(404);
+   }else if(!/^[\da-f]{32}$/.test(id)){
+	   res.sendStatus(400);
+   }else{
+   	 req.db.query(`SELECT * FROM house_table WHERE ID='${id}'`,(err,data)=>{
+   	 	if(err){
+			res.sendStatus(500);
+		}else  if(data[0].length===0){
+			res.sendStatus(404);
+		}else{
+   	 		res.send(data[0]);
+		}
+	 })
+   }
+});
 
 
 

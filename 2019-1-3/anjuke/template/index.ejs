@@ -25,10 +25,10 @@
               <button id="btn_add" type="button" class="btn btn-default glyphicon glyphicon-plus">新建</button>
             </div>
             <div class="form-group" style="margin-right:20px;">
-              <button id="btn_del" type="button" class="btn btn-default glyphicon glyphicon-remove">删除</button>
+              <button id="btn_del" type="button" class="btn btn-default glyphicon glyphicon-remove"d>删除</button>
             </div>
             <div class="form-group">
-              <input type="search" class="form-control" name="keyword" value="">
+              <input type="search" class="form-control" name="keyword" value="<%=keyword%>">
               <button type="submit" class="btn btn-default">搜索</button>
             </div>
           </form>
@@ -40,8 +40,22 @@
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
-                <li><a href="">1</a></li>
-                <li><a>2</a></li>
+			  <%
+			    let start=cur_page-(show_page_count-1)/2;
+			    let end=cur_page+(show_page_count-1)/2;
+			    if(start<1){
+			    	start=1
+				}
+				if(end>page_count){
+					end=page_count;
+				}
+			  for(let page=start;page<=end;page++){%>
+			  <% if(page===cur_page){ %>
+                <li><a href="?page=<%=page%>">[<%=page%>]</a></li>
+			  <% }else{ %>
+			    <li><a href="?page=<%=page%>"><%=page%></a></li>
+			  <%}%>
+			  <%}%>
             <li>
               <a href="#" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
@@ -58,7 +72,8 @@
                   ID
                 </label>
               </th>
-              <th></th>
+				<th>副标题</th>
+              <th>标题</th>
               <th>操作</th>
             </tr>
 		  </thead>
@@ -71,9 +86,10 @@
 					<%= json.ID%>
                 </label>
               </td>
-              <th></th>
+			  <td><%= json.sub_title%></td>
+			  <td><%= json.title%></td>
               <td>
-                <a href="javascript:;" onclick="">编辑</a>
+                <a href="javascript:;" onclick="mod_data('<%=json.ID%>')">编辑</a>
                 <a href="/admin/house/delete?id=<%=json.ID%>" onclick="return confirm('你确定删除这个房屋信息吗？删除不可撤销')">删除</a>
               </td>
             </tr>
@@ -107,8 +123,24 @@
       </div>
     </div>
 	<script>
-		const $=document.querySelectorAll.bind(document);
-
+		// const $=document.querySelectorAll.bind(document);
+        function mod_data(id){
+             $.ajax({
+				 url:'/admin/house/get_data',
+				 data:{id},
+				 dataType:'json',
+				 success(res){
+					 oShadow.style.display='block';
+					 oDialog.style.display='block';
+					 createForm(res);
+					 $("#is_mod")[0].value='true';
+					 $("#old_id")[0].value=id;
+				 },
+				 error(err){
+				 	res.send('error')
+				 }
+			 })
+		}
 		//打开关闭
 		let oShadow=$('#shadow')[0];
 		let oDialog=$('#dialog')[0];
@@ -119,6 +151,8 @@
 		oBtnAdd.onclick=function (){
 			oShadow.style.display='block';
 			oDialog.style.display='block';
+			createForm();
+			$("#is_mod")[0].value='false';
 		};
 
 		oBtnCancel.onclick=oBtnClose.onclick=function (){
@@ -127,42 +161,57 @@
 		};
 
 		//动态生成表单
-		let oFormContainer=$('#form_contrainer')[0];
+        createForm()
+		 function createForm(old_data={}){
+			 let oFormContainer=$('#form_contrainer')[0];
+              oFormContainer.innerHTML=''
+			 const form_inputs=[
+				 {type: 'text', name: 'title', title: '标题'},
+				 {type: 'text', name: 'sub_title', title: '副标题'},
+				 {type: 'text', name: 'position_main', title: '主位置'},
+				 {type: 'text', name: 'position_second', title: '副位置'},
+				 {type: 'number', name: 'ave_price', title: '均价'},
+				 {type: 'number', name: 'area_min', title: '最小面积'},
+				 {type: 'number', name: 'area_max', title: '最大面积'},
+				 {type: 'tel', name: 'tel', title: '电话'},
+				 {type: 'date', name: 'sale_time', title: '开盘日期'},
+				 {type: 'date', name: 'submit_time', title: '交房日期'},
+				 {type: 'text', name: 'building_type', title: '建筑类型'},
+				 {type: 'file', name: 'main_img', title: '大图'},
+				 {type: 'file', name: 'img', title: '小图(多选)', multiple: true},
+				 {type: 'text', name: 'property_types', title: '户型'},
+				 {type: 'file', name: 'property_img', title: '户型图'},
+			 ];
 
-		const form_inputs=[
-			{type: 'text', name: 'title', title: '标题'},
-			{type: 'text', name: 'sub_title', title: '副标题'},
-			{type: 'text', name: 'position_main', title: '主位置'},
-			{type: 'text', name: 'position_second', title: '副位置'},
-			{type: 'number', name: 'ave_price', title: '均价'},
-			{type: 'number', name: 'area_min', title: '最小面积'},
-			{type: 'number', name: 'area_max', title: '最大面积'},
-			{type: 'tel', name: 'tel', title: '电话'},
-			{type: 'date', name: 'sale_time', title: '开盘日期'},
-			{type: 'date', name: 'submit_time', title: '交房日期'},
-			{type: 'text', name: 'building_type', title: '建筑类型'},
-			{type: 'file', name: 'main_img', title: '大图'},
-			{type: 'file', name: 'img', title: '小图(多选)', multiple: true},
-			{type: 'text', name: 'property_types', title: '户型'},
-			{type: 'file', name: 'property_img', title: '户型图'},
-		];
+			 oFormContainer.innerHTML='';
 
-		oFormContainer.innerHTML='';
+			 for(let i=0;i<form_inputs.length;i++){
+				 let data=form_inputs[i];
+				 let oDiv=document.createElement('div');
 
-		for(let i=0;i<form_inputs.length;i++){
-			let data=form_inputs[i];
-			let oDiv=document.createElement('div');
-
-			oDiv.className='form-group';
-			oDiv.innerHTML=
-				`
+				 oDiv.className='form-group';
+				 oDiv.innerHTML=
+					 `
       <label for="id${i}" class="col-sm-2 control-label">${data.title}</label>
       <div class="col-sm-10">
-        <input type="${data.type}" ${data.multiple?'multiple':''} class="form-control" name="${data.name}" id="id${i}" placeholder="请输入${data.title}...">
+        <input type="${data.type}" ${data.multiple?'multiple':''} class="form-control" name="${data.name}" id="id${i}" placeholder="请输入${data.title}..." value="${old_data[data.name]||''}">
       </div>
       `;
 
-			oFormContainer.appendChild(oDiv);
+				 oFormContainer.appendChild(oDiv);
+				 //单独处理时间
+				 function toDou(n) {
+					 return parseInt(n)>=10?n:('0'+n);
+				 }
+
+				 if(data.type==='date'){
+				 	if(old_data[data.name]&&old_data[data.name]!=0){
+
+					}
+				 	let oDate=new Date();
+				 }
+
+		  }
 		}
 	</script>
   </body>
