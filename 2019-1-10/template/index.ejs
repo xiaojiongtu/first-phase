@@ -68,7 +68,6 @@
             <tr>
               <th width="300">
                 <label>
-                  <input type="checkbox">
                   ID
                 </label>
               </th>
@@ -86,7 +85,7 @@
 		  <tr>
               <td>
                 <label>
-					<input type="checkbox" name="ID_check" value="">
+					<input type="checkbox" name="ID_check"  value="<%=json.ID%>">
 					<%= json.ID%>
                 </label>
               </td>
@@ -98,7 +97,7 @@
 			  <% } %>
               <td>
                 <a href="javascript:;" onclick="mod_data('<%=json.ID%>')">编辑</a>
-                <a href="/admin/house/delete?id=<%=json.ID%>" onclick="return confirm('你确定删除这个房屋信息吗？删除不可撤销')">删除</a>
+                <a href="/admin/<%=table%>/delete?id=<%=json.ID%>" onclick="return confirm('你确定删除这个房屋信息吗？删除不可撤销')">删除</a>
               </td>
             </tr>
 		  <%})%>
@@ -219,6 +218,30 @@
 				  }
 			  })
 		 }
+		//删除
+		let oBtnDelBat=$('#btn_del')[0];
+		let aCheck=Array.from(document.getElementsByName('ID_check'));
+		oBtnDelBat.onclick=function (){
+			let arr=[];
+			aCheck.forEach(ch=>{
+				if(ch.checked){
+					arr.push(ch.value);
+				}
+			});
+			if(arr.length==0){
+				alert('请选择要删除的东西');
+			}else{
+				let url=`/admin/<%=table%>/delete?id=${encodeURIComponent(arr.join(','))}`;
+				if(confirm(`您真的要删除这${arr.length}条数据吗?`)){
+					window.location=url;
+				}
+			}
+		};
+		//左侧状态导航栏
+    let nav=$("#nav")[0];
+   Array.from(nav.children).forEach(li=>{
+	   li.className=li.title=='<%=table%>'?'active':'';
+   })
 	</script>
   </body>
 </html>

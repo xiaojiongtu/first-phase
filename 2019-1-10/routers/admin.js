@@ -131,7 +131,7 @@ admin_router.post('/login',(req,res)=>{
 				res.sendStatus(500)
 			}else{
 				//2.获取总的页码
-				req.db.query(`SELECT COUNT(*) AS c FROM house_table WHERE ${link_reg} `,(err,data)=>{
+				req.db.query(`SELECT COUNT(*) AS c FROM ${table}_table WHERE ${link_reg} `,(err,data)=>{
 					if(err){
 						res.sendStatus(500)
 					}else if(data[0].length===0){
@@ -152,31 +152,47 @@ admin_router.post('/login',(req,res)=>{
 		})
 	}
 });
-
 //添加 || 修改
  admin_router.post('/:table',(req,res)=>{
 	 // console.log(req.body);
 
 	 let {table}=req.params;
 	 //时间问题
-	 const file_info={
-		 main_img:{
-		 	 path:'main_img_path',
-			 real_path:'img_real_path',
-			 type:'single'
-		 },
-		 img:{
-			 path:'img_paths',
-			 real_path:'mg_real_paths',
-			 type:'array'
-		 },
-		 property_img:{
-			 path:'property_img_paths',
-			 real_path:'property_img_real_paths',
-			 type:'array'
-		 },
-	 };
+	 const file_infos={
+	 	house:{
+			main_img:{
+				path:'main_img_path',
+				real_path:'main_img_real_path',
+				type:'single'
+			},
+			img:{
+				path:'img_paths',
+				real_path:'img_real_paths',
+				type:'array'
+			},
+			property_img:{
+				path:'property_img_paths',
+				real_path:'property_img_real_paths',
+				type:'array'
+			},
+		},
+		broker:{
+			img:{
+				path:'img_path',
+				real_path:'img_real_path',
+				type:'single'
+			},
+		},
+		 ad:{
+			 img:{
+				 path:'img_path',
+				 real_path:'img_real_path',
+				 type:'single'
+			 },
+		 }
 
+	 };
+     const file_info=file_infos[table];
 	 const file_paths={};
 	 const file_real_paths={};
 	 for(let i=0;i<req.files.length;i++) {
@@ -202,21 +218,20 @@ admin_router.post('/login',(req,res)=>{
 	 // req.body['sale_time']=Math.floor(new Date(req.body['sale_time']).getTime()/1000);
 	 // req.body['submit_time']=Math.floor(new Date(req.body['submit_time']).getTime()/1000);
 	 if(req.body['is_mod']==='true'){
-	 	   if(!config[`insert_fields_${table}`]){
+		 if(!config[`insert_fields_${table}`]){
 	 	   	  res.sendStatus(404);
 		   }else {
 	 	   	  let fields=config[`insert_fields_${table}`].split(',');
-			   config['disallow_modify_fields'].split(',').forEach(name=>{
-                  fields=fields.filter(item=>name!==name);
+			 config['disallow_modify_fields'].split(',').forEach(name=>{
+				 fields=fields.filter(item=>item!=name);
 			   });
-			   let arr=[];
+			 let arr=[];
 			   fields.forEach(item=>{
 				   arr.push(`${item}='${req.body[item]}'`)
 			   });
 			   let sql=`UPDATE ${table}_table SET ${arr.join(',')} WHERE ID='${req.body['old_id']}'`;
 			   req.db.query(sql, err=>{
 				   if(err){
-					   console.log(err);
 					   res.sendStatus(500);
 				   }else{
 					   res.redirect(`/admin/${table}`);
@@ -232,20 +247,19 @@ admin_router.post('/login',(req,res)=>{
 
 			 req.body['ID']=common.uuid();
 			 req.body['admin_ID']=req.admin_ID;
-
 			 let arrField=[];
 			 let arrValue=[];
 		     config[`insert_fields_${table}`].split(',').forEach(name=>{
 				 arrField.push(name);
 				 arrValue.push(req.body[name])
 			 });
+
 		     arrField.push('create_time');
 		     arrValue.push(Math.floor(new Date().getTime()/1000));
 			 let sql=`INSERT INTO ${table}_table (${arrField.join(',')}) VALUES('${arrValue.join("','")}')`;
 
 			 req.db.query(sql,err=>{
 				 if(err){
-					 console.log(err);
 					 res.sendStatus(500)
 				 }else{
 					 res.redirect(`/admin/${table}`)
@@ -253,67 +267,91 @@ admin_router.post('/login',(req,res)=>{
 			 })
 		 }
  });
-
  //删除
- admin_router.get('/house/delete',(req,res)=>{
+ admin_router.get('/:table/delete',(req,res)=>{
     let ID=req.query['id'];
-    //1.删除关联的图片
-	 console.log(ID);
-	 req.db.query(`SELECT * FROM house_table WHERE ID='${ID}'`,(err,data)=>{
-        if(err){
-        	res.sendStatus(500);
-		}else if(data.length===0){
-        	res.sendStatus(404,'no this data')
-		}else{
-        	let arr=[];
-        	arr.push(data[0]['main_img_real_path']);
-        	data[0]['img_real_paths'].split(',').forEach(item=>{
-        		arr.push(item)
-			});
-			data[0]['property_img_real_paths'].split(',').forEach(item=>{
-				arr.push(item)
-			});
-         console.log(arr);
-			//2.删除数据本身  ,删除异步操作
-			//删除
-           let i=0;
-            next();
-           function next(){
-             fs.unlink(arr[i],err=>{
-             	if(err){
-					res.sendStatus(500);
-					console.log(err);
-				}else{
-					i++;
-					if(i<=arr.length){
-             			//删除文件完事
-						//2.删除数据本身
-						req.db.query(`DELETE FROM house_table WHERE ID='${ID}'`,err=>{
-							if(err){
-								res.sendStatus(500);
-								console.log(err);
-							}else{
-								res.redirect('/admin/house')
-							}
-						})
-					}else {
-						next();
-					}
-             	}
-			 })
-		   }
-		}
-	 })
+    let {table}=req.params;
+	 let aID=ID.split(',');
+	 //1.删除关联的图片
+	 let b_err=false;
+	 aID.forEach(item=>{
+		 if(!/^(\d|[a-f]){32}$/.test(item)){
+			 b_err=true;
+		 }
+	 });
+	 if(b_err){
+		 res.sendStatus(400);
+	 }else{
+		 let id_index=0;
+             _next();
+		 function _next() {
+		 	 let ID=aID[id_index++]
+			 req.db.query(`SELECT * FROM ${table}_table WHERE ID='${ID}'`,(err,data)=>{
+				 if(err){
+					 res.sendStatus(500);
+				 }else if(data.length===0){
+					 res.sendStatus(404,'no this data')
+				 }else{
+					 console.log(data)
+					 let arr=[];
+					 data[0]['main_img_real_path'] && arr.push(data[0]['main_img_real_path']);
+					 if(data[0]['img_real_paths']){
+						 data[0]['img_real_paths'].split(',').forEach(item=>{
+							 arr.push(item);
+						 });
+					 }
+					 if(data[0]['property_img_real_paths']){
+						 data[0]['property_img_real_paths'].split(',').forEach(item=>{
+							 arr.push(item);
+						 });
+					 }
 
+					 function deleteFromDB(){
+						 //2.删除数据本身  ,删除异步操作
+						 //删除
+						 req.db.query(`DELETE FROM ${table}_table WHERE ID='${ID}'`,err=>{
+							 if(err){
+								 res.sendStatus(500);
+							 }else{
+								 if(id_index<aID.length){
+									 _next()
+								 }else {
+									 res.redirect(`/admin/${table}`)
+								 }
+							 }
+						 })
+					 }
+					 if(arr.length>0){
+						 let i=0;
+						 next();
+						 function next(){
+							 fs.unlink(arr[i],err=>{
+								 if(err){
+									 res.sendStatus(500);
+								 }else{
+									 i++;
+									 if(i>=arr.length){
+										 //删除文件完事
+										 //2.删除数据本身
+										 deleteFromDB();
+									 }else {
+										 next();
+									 }
+								 }
+							 })
+						 }
+					 }else{
+						 deleteFromDB();
+					 }
+
+				 }
+			 })
+		 }
+
+	 }
 
  });
-
- //修改
-/*admin_router.get('/house/modify',(req,res)=>{
-
-});*/
 //接口
-
 admin_router.get('/:table/get_data',(req,res)=>{
 	 let {table}=req.params;
       let id=req.query.id;
