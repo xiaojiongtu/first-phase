@@ -17,6 +17,11 @@
 
  server.use((req,res,next)=>{
  	req.db=db;
+ 	req.cwd=__dirname;
+
+ 	res.show404=function(){
+ 		res.render('404',{})
+	}
  	next();
  });
  //中间件
@@ -50,7 +55,7 @@ server.use(cookieSess({
 
  //静态文件
  server.use(express.static('./www/'));
-
-
-
+ server.use((req,res)=>{
+ 	res.show404()
+ });
 

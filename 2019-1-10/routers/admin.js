@@ -3,12 +3,12 @@ const config=require('../config');
 const common=require('../libs/common');
 const fs=require('fs');
 
-let admin_router=express.Router();
-module.exports=admin_router;
+ let admin_router=express.Router();
+ module.exports=admin_router;
 
 //进入所有与admin相关的页面之前，都要校验用户身份，如果没有登录-----》去登录(admin/login)
 //所有的进入admin的 页面都走这个方法除了login
-admin_router.use((req,res,next)=>{
+ admin_router.use((req,res,next)=>{
 	/*if(!req.session['admin_ID']&&req.url!=='/login'){*/
 	if(!req.cookies['admin_token']&&req.path!=='/login'){
  		res.redirect(`/admin/login?ref=${req.url}`);
@@ -31,12 +31,12 @@ admin_router.use((req,res,next)=>{
  });
 
 //展现login页面
-admin_router.get('/login',(req,res)=>{
+ admin_router.get('/login',(req,res)=>{
   	 res.render('login',{error_msg:'',ref:req.query['ref']||''});
   });
 
 //提交了一个请求
-admin_router.post('/login',(req,res)=>{
+ admin_router.post('/login',(req,res)=>{
 	//bodyparser解析了post数据放在body
 	let{username,password}=req.body;
 	function setToken(id) {
@@ -93,6 +93,7 @@ admin_router.post('/login',(req,res)=>{
  admin_router.get('/',(req,res)=>{
 	res.redirect('/admin/house');
 });
+
  //显示，获取
  admin_router.get('/:table',(req,res)=>{
 
@@ -152,10 +153,9 @@ admin_router.post('/login',(req,res)=>{
 		})
 	}
 });
+
 //添加 || 修改
  admin_router.post('/:table',(req,res)=>{
-	 // console.log(req.body);
-
 	 let {table}=req.params;
 	 //时间问题
 	 const file_infos={
@@ -215,8 +215,6 @@ admin_router.post('/login',(req,res)=>{
 			 req.body[file_info[name].real_path]=file_real_paths[name].join(',');
 		 }
 	 }
-	 // req.body['sale_time']=Math.floor(new Date(req.body['sale_time']).getTime()/1000);
-	 // req.body['submit_time']=Math.floor(new Date(req.body['submit_time']).getTime()/1000);
 	 if(req.body['is_mod']==='true'){
 		 if(!config[`insert_fields_${table}`]){
 	 	   	  res.sendStatus(404);
@@ -256,8 +254,10 @@ admin_router.post('/login',(req,res)=>{
 
 		     arrField.push('create_time');
 		     arrValue.push(Math.floor(new Date().getTime()/1000));
-			 let sql=`INSERT INTO ${table}_table (${arrField.join(',')}) VALUES('${arrValue.join("','")}')`;
+		 // console.log(arrField);
+		 // console.log(arrValue)
 
+		 let sql=`INSERT INTO ${table}_table (${arrField.join(',')}) VALUES('${arrValue.join("','")}')`;
 			 req.db.query(sql,err=>{
 				 if(err){
 					 res.sendStatus(500)
@@ -267,6 +267,7 @@ admin_router.post('/login',(req,res)=>{
 			 })
 		 }
  });
+
  //删除
  admin_router.get('/:table/delete',(req,res)=>{
     let ID=req.query['id'];
@@ -285,7 +286,7 @@ admin_router.post('/login',(req,res)=>{
 		 let id_index=0;
              _next();
 		 function _next() {
-		 	 let ID=aID[id_index++]
+		 	 let ID=aID[id_index++];
 			 req.db.query(`SELECT * FROM ${table}_table WHERE ID='${ID}'`,(err,data)=>{
 				 if(err){
 					 res.sendStatus(500);
@@ -351,8 +352,9 @@ admin_router.post('/login',(req,res)=>{
 	 }
 
  });
+
 //接口
-admin_router.get('/:table/get_data',(req,res)=>{
+ admin_router.get('/:table/get_data',(req,res)=>{
 	 let {table}=req.params;
       let id=req.query.id;
    if(!id){
