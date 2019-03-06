@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="vue.js" charset="utf-8"></script>
+	<script src="vue-router.js"></script>
+	<style media="screen">
+		.my-link {color:black; text-decoration:none; padding:6px 4px; border:1px solid #CCC}
+		.router-link-active {color:blue; border:black; background:#eee}
+	</style>
+	<script>
+		window.onload=function (){
+			//1.声明路由
+			let r1=new VueRouter({
+               routes:[
+				   {path:'/user/:id',component:{template:`<div>当前用户{{$route.params.id}}</div>`}},
+
+			   ]
+			});
+			//2.调用路由
+			let vm=new Vue({
+				el: '#div1',
+				router:r1,
+
+			});
+		};
+	</script>
+</head>
+<body>
+<div id="div1">
+	<router-link class="my-link" to="/user/2323">用户</router-link>
+	<router-link class="my-link" to="/user/233344">用户2</router-link>
+    <router-view></router-view>
+</div>
+</body>
+</html>

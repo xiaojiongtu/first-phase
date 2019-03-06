@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="vue.js" charset="utf-8"></script>
+	<style media="screen">
+		.box {width:200px; height:200px; background:#CCC}
+	</style>
+	<script>
+		window.onload=function (){
+			let vm=new Vue({
+				el: '#div1',
+				data:{
+					arr:[23,3,44,33],
+					json:{a:12,b:11},
+				    str:'sjdshdjshdj',
+					n:4,
+					users: [
+						{id: '3', name: 'blue', pass: '123456'},
+						{id: '5', name: '张三', pass: '654321'},
+						{id: '9', name: '李四', pass: '111111'},
+					],
+				},
+				methods: {
+					fn (){
+						this.show=!this.show;
+					}
+				}
+			});
+		};
+	</script>
+</head>
+<body>
+<div id="div1" v-cloak>
+	<input type="button" value="显示隐藏" @click="fn">
+	<div class="box" v-if="show"></div>
+	<transition name="fade">
+		<div class="box" v-show="show"></div>
+	</transition>
+	<ul>
+		<li v-for="val,key in arr">{{key}}:{{val}}</li>
+	</ul>
+	<ul>
+		<li v-for="val,key in json">{{key}}:{{val}}</li>
+	</ul>
+	<ul>
+		<li v-for="val,key in str">{{key}}:{{val}}</li>
+	</ul>
+	<ul>
+		<li v-for="val in n">{{val}}</li>
+	</ul>
+	<ul>
+		<li v-for="stu in users">{{stu.id}}{{stu.name}},{{stu.age}}</li>
+	</ul>
+</div>
+</body>
+</html>

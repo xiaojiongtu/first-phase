@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script src="vue.js"></script>
+</head>
+<body>
+<div id="box" v-html="a">
+
+</div>
+<script>
+	let vm=new Vue({
+		el:'#box',
+		data:{
+			a:'<span>wwew</span>'
+		}
+	})
+</script>
+</body>
+</html>

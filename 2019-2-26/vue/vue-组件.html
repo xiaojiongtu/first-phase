@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="vue.js" charset="utf-8"></script>
+	<script src="vue-router.js"></script>
+	<style media="screen">
+		.my-link {color:black; text-decoration:none; padding:6px 4px; border:1px solid #CCC}
+		.router-link-active {color:blue; border:black; background:#eee}
+	</style>
+	<script>
+		window.onload=function (){
+			//1.注册组件
+			Vue.component('cmp-test',{template:	`<div>deee</div>`});
+			let vm=new Vue({
+				el: '#div1',
+			});
+			let vm2=new Vue({
+				el: '#div2',
+			});
+		};
+	</script>
+</head>
+<body>
+<div id="div1">
+	<cmp-test></cmp-test>
+</div>
+<div id="div2">
+	<cmp-test></cmp-test>
+</div>
+</body>
+</html>
